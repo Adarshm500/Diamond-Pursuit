@@ -1,0 +1,4 @@
+repository "Diamond Pursuit@adarshm500@cloud"
+  path "/"
+    br "/main"
+    co "/main"
