@@ -4,20 +4,12 @@ using UnityEngine;
 
 public class PlatformController : MonoBehaviour
 {
-    [SerializeField] private float speed = .2f;
-    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private float speed = 10f;
     private bool movementDirectionLeft = true;
 
     private void Update()
     {
-        if (movementDirectionLeft)
-        {
-            transform.position -= new Vector3(speed, 0);
-        }
-        else
-        {
-            transform.position += new Vector3(speed, 0);
-        }
+        transform.position += (movementDirectionLeft ? -1 : 1) * new Vector3(speed * Time.deltaTime, 0);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -27,5 +19,10 @@ public class PlatformController : MonoBehaviour
             // not the player
             movementDirectionLeft = !movementDirectionLeft;
         }
+    }
+
+    public float platformSpeed()
+    {
+        return speed * (movementDirectionLeft ? -1 : 1);
     }
 }

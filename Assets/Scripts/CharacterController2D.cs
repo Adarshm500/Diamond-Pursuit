@@ -12,6 +12,9 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField] private Transform m_CeilingCheck;                          // A position marking where to check for ceilings
     [SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
 
+    [SerializeField] private LayerMask m_WhatIsPlatform;
+    [SerializeField] private PlatformController m_PlatformController;
+
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded;            // Whether or not the player is grounded.
     const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
@@ -19,10 +22,14 @@ public class CharacterController2D : MonoBehaviour
     private bool m_FacingRight = true;  // For determining which way the player is currently facing.
     private Vector3 m_Velocity = Vector3.zero;
 
+    // Writted by me
+    private bool m_Platformed;
+
     [Header("Events")]
     [Space]
 
     public UnityEvent OnLandEvent;
+    public UnityEvent OnPlatformEvent;
 
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
@@ -36,6 +43,9 @@ public class CharacterController2D : MonoBehaviour
 
         if (OnLandEvent == null)
             OnLandEvent = new UnityEvent();
+
+        if (OnPlatformEvent == null)
+            OnPlatformEvent = new UnityEvent();
 
         if (OnCrouchEvent == null)
             OnCrouchEvent = new BoolEvent();
@@ -58,6 +68,22 @@ public class CharacterController2D : MonoBehaviour
                     OnLandEvent.Invoke();
             }
         }
+
+        bool wasPlatformed = m_Platformed;
+        m_Platformed = false;
+
+        Collider2D[] platformColliders = Physics2D.OverlapCircleAll(m_GroundCheck.position,
+            k_GroundedRadius, m_WhatIsPlatform);
+        for (int i = 0; i < platformColliders.Length; i++)
+        {
+            if (platformColliders[i].gameObject != gameObject)
+            {
+                m_Platformed = true;
+                Debug.Log(m_Platformed);
+                if (!wasPlatformed)
+                    OnPlatformEvent.Invoke();
+            }
+        }
     }
 
 
@@ -74,7 +100,7 @@ public class CharacterController2D : MonoBehaviour
         }
 
         //only control the player if grounded or airControl is turned on
-        if (m_Grounded || m_AirControl)
+        if (m_Grounded || m_AirControl || m_Platformed)
         {
 
             // If crouching
@@ -106,6 +132,13 @@ public class CharacterController2D : MonoBehaviour
                 }
             }
 
+            // if on platform
+            if (m_Platformed)
+            {
+                move += m_PlatformController.platformSpeed() * 0.1f;
+
+            }
+
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
             // And then smoothing it out and applying it to the character
@@ -125,10 +158,11 @@ public class CharacterController2D : MonoBehaviour
             }
         }
         // If the player should jump...
-        if (m_Grounded && jump)
+        if ((m_Grounded || m_Platformed) && jump)
         {
             // Add a vertical force to the player.
             m_Grounded = false;
+            m_Platformed = false;
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
         }
     }
