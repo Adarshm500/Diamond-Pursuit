@@ -509,8 +509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2328bd1f131b111419ba1f61a8069dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.01
-  playerMovement: {fileID: 0}
+  speed: 3
 --- !u!50 &300046878
 Rigidbody2D:
   serializedVersion: 4
@@ -563,7 +562,7 @@ Transform:
   m_GameObject: {fileID: 384853735}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.03, y: -0.46, z: 0}
+  m_LocalPosition: {x: -0.03, y: -0.524, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -587,7 +586,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3103791824936397252, guid: 5144e68b605d6794ca4b1e1775d9d54e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.2114
+      value: 3.08
       objectReference: {fileID: 0}
     - target: {fileID: 3103791824936397252, guid: 5144e68b605d6794ca4b1e1775d9d54e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1077,11 +1076,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2395497896942435646, guid: afe1972017d6e8744a23356c5e98a956, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.58
+      value: 5.65
       objectReference: {fileID: 0}
     - target: {fileID: 2395497896942435646, guid: afe1972017d6e8744a23356c5e98a956, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.19
+      value: 2.09
       objectReference: {fileID: 0}
     - target: {fileID: 2395497896942435646, guid: afe1972017d6e8744a23356c5e98a956, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1542,7 +1541,14 @@ MonoBehaviour:
   m_GroundCheck: {fileID: 384853736}
   m_CeilingCheck: {fileID: 965639492}
   m_CrouchDisableCollider: {fileID: 0}
+  m_WhatIsPlatform:
+    serializedVersion: 2
+    m_Bits: 8
+  m_PlatformController: {fileID: 300046877}
   OnLandEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlatformEvent:
     m_PersistentCalls:
       m_Calls: []
   OnCrouchEvent:
@@ -1607,7 +1613,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.033985376, y: -0.030614495}
+  m_Offset: {x: -0.033985376, y: -0.01767385}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1618,7 +1624,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.37949848, y: 1.007221}
+  m_Size: {x: 0.37949848, y: 0.9813397}
   m_EdgeRadius: 0
 --- !u!4 &1647161832
 Transform:
@@ -1629,7 +1635,7 @@ Transform:
   m_GameObject: {fileID: 1647161828}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.87, y: -3.416, z: 0.036899365}
+  m_LocalPosition: {x: 6.71, y: -3.416, z: 0.036899365}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1651,7 +1657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 1647161829}
-  runSpeed: 40
+  runSpeed: 20
 --- !u!1001 &1779338154
 PrefabInstance:
   m_ObjectHideFlags: 0

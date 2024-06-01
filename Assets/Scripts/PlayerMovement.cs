@@ -19,7 +19,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            isJumping = true;
             jump = true;
         }
     }
@@ -27,7 +26,6 @@ public class PlayerMovement : MonoBehaviour
     {
         characterController.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
             jump = false;
-            isJumping = false;
     }
 
     public bool IsWalking()

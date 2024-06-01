@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -21,6 +22,11 @@ public class CharacterController2D : MonoBehaviour
     private Rigidbody2D m_Rigidbody2D;
     private bool m_FacingRight = true;  // For determining which way the player is currently facing.
     private Vector3 m_Velocity = Vector3.zero;
+
+    // events
+    public event EventHandler OnJump;
+    public event EventHandler OnGroundLanding;
+    public event EventHandler OnPlatformLanding;
 
     // Writted by me
     private bool m_Platformed;
@@ -65,7 +71,10 @@ public class CharacterController2D : MonoBehaviour
             {
                 m_Grounded = true;
                 if (!wasGrounded)
+                {
                     OnLandEvent.Invoke();
+                    OnGroundLanding?.Invoke(this, EventArgs.Empty);
+                }    
             }
         }
 
@@ -81,7 +90,10 @@ public class CharacterController2D : MonoBehaviour
                 m_Platformed = true;
                 Debug.Log(m_Platformed);
                 if (!wasPlatformed)
+                {
                     OnPlatformEvent.Invoke();
+                    OnPlatformLanding?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
     }
@@ -164,6 +176,7 @@ public class CharacterController2D : MonoBehaviour
             m_Grounded = false;
             m_Platformed = false;
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+            OnJump?.Invoke(this, EventArgs.Empty);
         }
     }
 
