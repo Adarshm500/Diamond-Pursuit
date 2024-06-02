@@ -21,7 +21,7 @@ public class PlatformController : MonoBehaviour
         }
     }
 
-    public float platformSpeed()
+    public float platformSpeedX()
     {
         return speed * (movementDirectionLeft ? -1 : 1);
     }

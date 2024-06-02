@@ -15,6 +15,7 @@ public class CharacterController2D : MonoBehaviour
 
     [SerializeField] private LayerMask m_WhatIsPlatform;
     [SerializeField] private PlatformController m_PlatformController;
+    [SerializeField] private LiftController m_LiftController;
 
     const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     private bool m_Grounded;            // Whether or not the player is grounded.
@@ -101,6 +102,7 @@ public class CharacterController2D : MonoBehaviour
 
     public void Move(float move, bool crouch, bool jump)
     {
+        float moveY = m_Rigidbody2D.velocity.y;
         // If crouching, check to see if the character can stand up
         if (!crouch)
         {
@@ -147,12 +149,17 @@ public class CharacterController2D : MonoBehaviour
             // if on platform
             if (m_Platformed)
             {
-                move += m_PlatformController.platformSpeed() * 0.1f;
+                move += m_PlatformController.platformSpeedX() * 0.1f;
 
             }
 
+            if (m_LiftController.PlayerOnLift())
+            {
+                moveY += m_LiftController.LiftSpeedY() * 0.1f;
+            }
+
             // Move the character by finding the target velocity
-            Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+            Vector3 targetVelocity = new Vector2(move * 10f, moveY);
             // And then smoothing it out and applying it to the character
             m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
@@ -170,7 +177,7 @@ public class CharacterController2D : MonoBehaviour
             }
         }
         // If the player should jump...
-        if ((m_Grounded || m_Platformed) && jump)
+        if ((m_Grounded || m_Platformed || m_LiftController.PlayerOnLift()) && jump)
         {
             // Add a vertical force to the player.
             m_Grounded = false;
